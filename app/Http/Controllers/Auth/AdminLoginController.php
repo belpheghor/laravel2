@@ -7,7 +7,8 @@ class AdminLoginController extends Controller
 {
 	public function __construct()
 	{
-		$this->middleware('guest:admin');
+		$this->middleware('guest:admin', ['except'=> ['logout']]);
+		
 	}
 	function showLoginForm()
 	{
@@ -28,5 +29,10 @@ class AdminLoginController extends Controller
 		}
 // If unsuccessful, then redirect back to the login with the form data
 		redirect()->back()->withInput($request->only('email', 'remember'));
+	}
+	public function logout()
+	{
+		Auth::guard('admin')->logout();
+		return redirect('/');
 	}
 }
